@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-<!-- Menu -->
-<menuitem id="menu_planning_employee_equipment"
-          name="Employees &amp; Equipments"
-          parent="planning.planning_menu_schedule"
-          action="action_planning_employee_equipment"
-          sequence="20"/>
 
     <record id="view_planning_employee_equipment_list" model="ir.ui.view">
     <field name="name">planning.slot.employee.equipment.list</field>
@@ -62,6 +56,12 @@
     <field name="context">{'search_default_group_by_employee': 1}</field>
 </record>
 
+<!-- Menu -->
+<menuitem id="menu_planning_employee_equipment"
+          name="By Employees"
+          parent="planning.planning_menu_schedule"
+          action="action_planning_employee_equipment"
+          sequence="20"/>
 
 
 </odoo>
