@@ -18,7 +18,7 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.view_task_form2" />
         <field name="arch" type="xml">
-            <xpath expr="//field[@class='o_task_customer_field']" position="after">
+           <xpath expr="//field[hasclass('o_task_customer_field')]" position="after">
                 <field name="StartDate" />
 
             </xpath>
