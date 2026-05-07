@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_planning_slot_document">
+        <t t-call="web.html_container">
+            <t t-set="doc" t-value="docs[0]"/>
+            <t t-set="company" t-value="doc.company_id or env.company"/>
+
+            <!-- CAS : pas de assigned_by -->
+            <t t-if="not doc.assigned_by">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div style="text-align:center; margin-top:200px;">
+                            <div style="text-align:center; margin-top:40px;">
+                                <svg width="160" height="160" viewBox="0 0 64 64">
+                                    <circle cx="32" cy="32" r="30" fill="#f5f7fa" stroke="#1a7abf" stroke-width="2"/>
+                                    <circle cx="32" cy="24" r="8" fill="#1a7abf"/>
+                                    <path d="M16 48c0-7 7-11 16-11s16 4 16 11" fill="#1a7abf"/>
+                                </svg>
+                            </div>
+                            <div style="font-size:30px; font-weight:700; color:#555; margin-top:20px;">
+                                Aucun utilisateur assigné
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+
+            <!-- CAS : assigned_by existe -->
+            <t t-else="">
+                <t t-set="user" t-value="doc.assigned_by"/>
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <style>
+                            * { margin: 0; padding: 0; box-sizing: border-box; }
+                            @page { margin: 0; }
+                            html, body { margin: 0 !important; padding: 0 !important; }
+                            .o_main_content { margin-top: 0 !important; padding-top: 0 !important; }
+                            .page {
+                                width: 100%;
+                                min-height: 1050px;
+                                font-family: Arial, sans-serif;
+                                padding: 30px 0px;
+                                background: #fff;
+                            }
+                            .ref {
+                                font-size: 16px;
+                                font-weight: 700;
+                                text-decoration: underline;
+                                margin-bottom: 50px;
+                            }
+                            .title-wrap {
+                                text-align: center;
+                                margin-bottom: 55px;
+                            }
+                            .title-box {
+                                display: inline-block;
+                                border: 3.5px solid #1a7abf;
+                                padding: 11px 50px;
+                                width: 320px;
+                            }
+                            .title-box span {
+                                font-size: 16px;
+                                font-weight: 700;
+                                color: #1a1a1a;
+                                letter-spacing: 0.3px;
+                            }
+                            .field-label {
+                                font-weight: 700;
+                                font-size: 16px;
+                                color: #1a1a1a;
+                            }
+                            .field-value {
+                                font-weight: 400;
+                                font-size: 16px;
+                                color: #1a1a1a;
+                            }
+                            table {
+                                border-top: 1px solid transparent !important;
+                                border-left: 1px solid transparent !important;
+                                border-right: 1px solid transparent !important;
+                            }
+                        </style>
+
+                        <!-- HEADER -->
+                        <table style="width:100%; border-bottom:4px solid #1a7abf; padding-bottom:20px; margin-bottom:85px;">
+                            <tr>
+                                <!-- LOGO -->
+                                <td style="width:22%; vertical-align:top; text-align:right; margin-right:15px;">
+                                    <img t-if="company.logo"
+                                        t-att-src="'data:image/png;base64,%s' % company.logo.decode('utf-8')"
+                                        style="height:100px; max-width:100px; width:auto; display:block; margin:0 auto;"/>
+                                </td>
+                                <!-- INFOS SOCIÉTÉ -->
+                                <td style="width:78%; vertical-align:top; text-align:left; position:relative; margin-left:15px;">
+                                    <div style="font-size:22px; font-weight:700; white-space:nowrap;">
+                                        <t t-esc="company.name"/>
+                                        <div style="font-size:18px; color:#1a7abf; font-weight:600;">
+                                            Un Accompagnement sûr !
+                                        </div>
+                                    </div>
+                                    <div style="text-align:right;">
+                                        <div style="display:inline-block; text-align:left; margin-bottom:10px; margin-right:10px;">
+                                            <!-- ADRESSE -->
+                                            <div style="display:flex; align-items:flex-start; gap:5px; margin-bottom:4px;">
+                                                <svg width="25" height="25" viewBox="0 0 24 24" fill="#1a7abf" style="flex-shrink:0; margin-top:1px;">
+                                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+                                                </svg>
+                                                <span style="font-size:14px;">
+                                                    <t t-esc="' '.join(filter(None, [company.street or '', company.city or '', company.state_id.name or '', company.country_id.name or '']))"/>
+                                                </span>
+                                            </div>
+                                            <!-- TÉLÉPHONE -->
+                                            <t t-if="company.phone">
+                                                <div style="display:flex; align-items:center; gap:5px; margin-bottom:4px;">
+                                                    <svg width="25" height="25" viewBox="0 0 24 24" fill="#1a7abf" style="flex-shrink:0;">
+                                                        <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                                                    </svg>
+                                                    <span style="font-size:14px;">
+                                                        <t t-esc="' / '.join(filter(None, [company.phone or '']))"/>
+                                                    </span>
+                                                </div>
+                                            </t>
+                                            <!-- SITE WEB -->
+                                            <t t-if="company.website">
+                                                <div style="display:flex; align-items:center; gap:5px;">
+                                                    <svg width="25" height="25" viewBox="0 0 24 24" fill="#1a7abf" style="flex-shrink:0;">
+                                                        <path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm-1 17.93V18a1 1 0 00-1-1H8v-2a1 1 0 00-1-1H4.07A8.018 8.018 0 014 12c0-.34.02-.67.06-1H6a1 1 0 001-1V8l2-2V4.07A7.987 7.987 0 0112 4c1.07 0 2.09.21 3 .59V6a1 1 0 00-1 1v1H12a1 1 0 00-1 1v1.5l-1 1V14h3v-1a1 1 0 011-1h1.27c.47.9.73 1.92.73 3a8.018 8.018 0 01-5 7.93z"/>
+                                                    </svg>
+                                                    <span style="font-size:14px;">
+                                                        <t t-esc="company.website"/>
+                                                    </span>
+                                                </div>
+                                            </t>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <div style="padding:0px 100px; font-size:16px;">
+
+                            <!-- RÉFÉRENCE -->
+                            <div class="ref">
+                                <t t-esc="doc.mission_order_ref or 'N/A'" />
+                            </div>
+
+                            <!-- TITRE -->
+                            <div class="title-wrap" style="margin-top:80px; margin-bottom:120px;">
+                                <div class="title-box">
+                                    <span style="font-weight:700; font-size:18px;">Ordre De Mission</span>
+                                </div>
+                            </div>
+
+                            <!-- TABLEAU -->
+                            <table style="width:100%; border-collapse:collapse;">
+
+                                <!-- NOM -->
+                                <tr style="border-bottom:1px solid #888;">
+                                    <td style="width:50%; padding:18px 0;">
+                                        <span class="field-label">Nom : </span>
+                                        <span class="field-value">
+                                            <t t-esc="doc.resource_id.name.split(' ')[0] if doc.resource_id.name else ''"/>
+                                        </span>
+                                    </td>
+                                    <td style="width:50%; padding:18px 0;">
+                                        <span class="field-label">Prénom : </span>
+                                        <span class="field-value">
+                                            <t t-if="doc.resource_id.name and ' ' in doc.resource_id.name">
+                                                <t t-esc="' '.join(doc.resource_id.name.split(' ')[1:])"/>
+                                            </t>
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <!-- FONCTION -->
+                                <tr style="border-bottom:1px solid #888;">
+                                    <td colspan="2" style="padding:18px 0;">
+                                        <span class="field-label">Fonction : </span>
+                                        <span class="field-value">
+                                            <t t-esc="doc.resource_id.job_title or ''"/>
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <!-- ADRESSE -->
+                                <tr style="border-bottom:1px solid #888;">
+                                    <td colspan="2" style="padding:18px 0;">
+                                        <span class="field-label">Adresse : </span>
+                                        <span class="field-value">
+                                            <t t-esc="' '.join(filter(None, [company.street or '', company.city or '', company.state_id.name or '', company.country_id.name or '']))"/>
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <!-- MOYEN DE TRANSPORT -->
+                                <tr style="border-bottom:1px solid #888;">
+                                    <td colspan="2" style="padding:18px 0;">
+                                        <span class="field-label">Moyen de transport : </span>
+                                        <span class="field-value">
+                                            <t t-esc="'' " />
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <!-- ÉQUIPEMENT -->
+                                <tr style="border-bottom:1px solid #888;">
+                                    <td colspan="2" style="padding:18px 0;">
+                                        <span class="field-label">Équipement : </span>
+                                        <span class="field-value">
+                                            <t t-esc="doc.resource_id.name or ''"/>
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <!-- RÔLE -->
+                                <tr style="border-bottom:1px solid #888;">
+                                    <td colspan="2" style="padding:18px 0;">
+                                        <span class="field-label">Rôle : </span>
+                                        <span class="field-value">
+                                            <t t-esc="doc.role_id.name or ''"/>
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <!-- MOTIF -->
+                                <tr style="border-bottom:1px solid #888;">
+                                    <td colspan="2" style="padding:18px 0;">
+                                        <span class="field-label">Motif : </span>
+                                        <span class="field-value">
+                                            <t t-esc="doc.name or ''"/>
+                                        </span>
+                                    </td>
+                                </tr>
+
+                                <!-- DATES -->
+                                <tr style="border-bottom:1px solid #888;">
+                                    <td style="padding:18px 0;">
+                                        <span class="field-label">Date d'aller : </span>
+                                        <span class="field-value">
+                                            <t t-if="doc.start_datetime">
+                                                <t t-esc="doc.start_datetime.strftime('%d/%m/%Y %H:%M')"/>
+                                            </t>
+                                        </span>
+                                    </td>
+                                    <td style="padding:18px 0;">
+                                        <span class="field-label">Date de retour : </span>
+                                        <span class="field-value">
+                                            <t t-if="doc.end_datetime">
+                                                <t t-esc="doc.end_datetime.strftime('%d/%m/%Y %H:%M')"/>
+                                            </t>
+                                        </span>
+                                    </td>
+                                </tr>
+
+                            </table>
+
+                            <!-- SIGNATURE -->
+                            <div style="margin-top:55px; font-weight:700; font-size:16px; color:#1a1a1a;">
+                                Fait à Sétif Le : <t t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y')"/>
+                            </div>
+
+                        </div>
+                    </div>
+                </t>
+            </t>
+
+        </t>
+    </template>
+</odoo>

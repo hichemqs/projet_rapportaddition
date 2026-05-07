@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="planning_gantt_assets_inherit"
+              inherit_id="planning.assets"
+              name="Planning Gantt Controller Inherit">
+        <xpath expr="." position="inside">
+            <script type="module"
+                    src="/projet_rapportaddition/static/src/views/planning_gantt_controller_inherit.js"/>
+        </xpath>
+    </template>
+</odoo>

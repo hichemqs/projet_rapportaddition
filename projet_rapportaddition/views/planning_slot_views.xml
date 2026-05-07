@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="planning_slot_form_inherit_assigned_by" model="ir.ui.view">
+        <field name="name">planning.slot.form.inherit.assigned.by</field>
+        <field name="model">planning.slot</field>
+        <field name="inherit_id" ref="planning.planning_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='resource_id']" position="after">
+           <field name="assigned_by" 
+           string="Assigned By"
+           invisible="resource_type != 'material'"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>
