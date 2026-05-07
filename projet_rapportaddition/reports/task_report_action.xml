@@ -20,7 +20,7 @@
         <field name="model">project.task</field>
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">projet_rapportaddition.report_task_document</field>
-        <field name="report_file">projet_ et il faut rapportaddition.report_task_document</field>
+        <field name="report_file">projet_rapportaddition.report_task_document</field>
     </record>
 
 </odoo>
