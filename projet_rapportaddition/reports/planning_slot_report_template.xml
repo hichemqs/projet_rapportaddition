@@ -4,6 +4,13 @@
         <t t-call="web.html_container">
             <t t-set="doc" t-value="docs[0]"/>
             <t t-set="company" t-value="doc.company_id or env.company"/>
+            <t t-set="client"
+   t-value="doc.project_id.partner_id"/>
+        <t t-set="machines"
+           t-value="env['planning.slot'].search([
+                ('assigned_by', '=', doc.assigned_by.id),
+                ('resource_type', '=', 'material')
+           ]).mapped('resource_id').filtered(lambda r: r)"/>
 
             <!-- CAS : pas de assigned_by -->
             <t t-if="not doc.assigned_by">
@@ -185,12 +192,40 @@
                                 <!-- ADRESSE -->
                                 <tr style="border-bottom:1px solid #888;">
                                     <td colspan="2" style="padding:18px 0;">
-                                        <span class="field-label">Adresse : </span>
+                                        <span class="field-label">Adresse Client : </span>
                                         <span class="field-value">
-                                            <t t-esc="' '.join(filter(None, [company.street or '', company.city or '', company.state_id.name or '', company.country_id.name or '']))"/>
+                                            <t t-esc="' '.join(filter(None, [
+                                                client.street or '',
+                                                client.city or '',
+                                                client.country_id.name or ''
+                                            ]))"/>
                                         </span>
                                     </td>
                                 </tr>
+
+
+
+                                                                <!-- Client -->
+                                <tr style="border-bottom:1px solid #888;">
+                                    <td colspan="2" style="padding:18px 0;">
+                                        <span class="field-label">Client : </span>
+                                        <span class="field-value">
+                                            <t t-esc="client.name or ''"/>
+                                        </span>
+                                    </td>
+                                </tr>
+                                                                <!-- MOTIF -->
+                                <tr style="border-bottom:1px solid #888;">
+                                    <td colspan="2" style="padding:18px 0;">
+                                        <span class="field-label">Motif : </span>
+                                        <span class="field-value">
+                                            <t t-esc="doc.name or ''"/>
+                                        </span>
+                                    </td>
+                                </tr>
+
+
+                                
 
                                 <!-- MOYEN DE TRANSPORT -->
                                 <tr style="border-bottom:1px solid #888;">
@@ -202,35 +237,19 @@
                                     </td>
                                 </tr>
 
-                                <!-- ÉQUIPEMENT -->
+                                <!-- Matériel mis à disposition de personnel :  -->
                                 <tr style="border-bottom:1px solid #888;">
                                     <td colspan="2" style="padding:18px 0;">
-                                        <span class="field-label">Équipement : </span>
+                                        <span class="field-label">Matériel mis à disposition de personnel : </span>
                                         <span class="field-value">
-                                            <t t-esc="doc.resource_id.name or ''"/>
+                                            <t t-if="machines">
+                                                <t t-esc="', '.join(machines.mapped('name'))"/>
+                                            </t>
                                         </span>
                                     </td>
                                 </tr>
 
-                                <!-- RÔLE -->
-                                <tr style="border-bottom:1px solid #888;">
-                                    <td colspan="2" style="padding:18px 0;">
-                                        <span class="field-label">Rôle : </span>
-                                        <span class="field-value">
-                                            <t t-esc="doc.role_id.name or ''"/>
-                                        </span>
-                                    </td>
-                                </tr>
 
-                                <!-- MOTIF -->
-                                <tr style="border-bottom:1px solid #888;">
-                                    <td colspan="2" style="padding:18px 0;">
-                                        <span class="field-label">Motif : </span>
-                                        <span class="field-value">
-                                            <t t-esc="doc.name or ''"/>
-                                        </span>
-                                    </td>
-                                </tr>
 
                                 <!-- DATES -->
                                 <tr style="border-bottom:1px solid #888;">
@@ -238,7 +257,7 @@
                                         <span class="field-label">Date d'aller : </span>
                                         <span class="field-value">
                                             <t t-if="doc.start_datetime">
-                                                <t t-esc="doc.start_datetime.strftime('%d/%m/%Y %H:%M')"/>
+                                                <t t-esc="doc.start_datetime.strftime('%d/%m/%Y')"/>
                                             </t>
                                         </span>
                                     </td>
@@ -246,7 +265,7 @@
                                         <span class="field-label">Date de retour : </span>
                                         <span class="field-value">
                                             <t t-if="doc.end_datetime">
-                                                <t t-esc="doc.end_datetime.strftime('%d/%m/%Y %H:%M')"/>
+                                                <t t-esc="doc.end_datetime.strftime('%d/%m/%Y')"/>
                                             </t>
                                         </span>
                                     </td>

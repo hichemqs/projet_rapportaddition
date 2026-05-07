@@ -8,7 +8,7 @@ patch(PlanningGanttRenderer.prototype, {
     async getPopoverProps(pill) {
         const popoverProps = await super.getPopoverProps(...arguments);
 
-        // ═══ زر Ordre de Mission (موجود من قبل) ═══
+        // ═══ زر Ordre de Mission ═══
         popoverProps.buttons.push({
             text: _t("Print"),
             class: "btn btn-sm btn-secondary",
@@ -24,7 +24,7 @@ patch(PlanningGanttRenderer.prototype, {
             },
         });
 
-        // ═══ زر Décharge (جديد) ═══
+        // ═══ Décharge 
         popoverProps.buttons.push({
             text: _t("Décharge"),
             class: "btn btn-sm btn-secondary",
