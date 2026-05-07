@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_decharge" model="ir.actions.report">
+        <field name="name">Décharge</field>
+        <field name="model">planning.slot</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">projet_rapportaddition.report_decharge_document</field>
+        <field name="report_file">projet_rapportaddition.report_decharge_document</field>
+    </record>
+</odoo>
