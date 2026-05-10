@@ -3,7 +3,7 @@ from odoo import models, fields, api
 class PlanningSlot(models.Model):
     _inherit = 'planning.slot'
 
-    assigned_by = fields.Many2one('res.users', string='Assigned By', default=lambda self: self.env.user)
+    assigned_by = fields.Many2one('hr.employee', string='Assigned By', default=lambda self: self.env.user)
 
 
     mission_order_ref = fields.Char(

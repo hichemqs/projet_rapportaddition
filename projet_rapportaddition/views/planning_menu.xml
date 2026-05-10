@@ -1,67 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-
+    <!-- ========================= -->
+    <!-- LIST VIEW (CLEAN UI)     -->
+    <!-- ========================= -->
     <record id="view_planning_employee_equipment_list" model="ir.ui.view">
-    <field name="name">planning.slot.employee.equipment.list</field>
-    <field name="model">planning.slot</field>
-    <field name="arch" type="xml">
-        <list string="Employees &amp; Equipments" 
-              sample="1"
-              decoration-muted="not resource_id">
-            
-            <!-- Employé qui a assigné -->
-            <field name="assigned_by" 
-                   string="Employee"
-                   widget="many2one_avatar_user"/>
-            
-            <!-- Équipement assigné -->
-            <field name="resource_id" 
-                   string="Equipment"
-                   widget="many2one_avatar_resource"/>
-            
-            <!-- Dates -->
-            <field name="start_datetime" string="From"/>
-            <field name="end_datetime" string="To"/>
-            
-            <!-- Champs invisibles nécessaires -->
-            <field name="resource_type" column_invisible="1"/>
+        <field name="name">planning.slot.employee.equipment.list</field>
+        <field name="model">planning.slot</field>
+        <field name="arch" type="xml">
 
-        </list>
-    </field>
-</record>
+            <list string="Employees &amp; Equipments"
+                  sample="1"
+                  default_order="start_datetime desc"
+                  decoration-muted="not resource_id"
+                  decoration-danger="end_datetime &lt; current_date"
+                  decoration-info="resource_type == 'material'">
 
+                <!-- Employee -->
+                <field name="assigned_by"
+                       string="Employee"
+                       widget="many2one_avatar_user"/>
+
+                <!-- Equipment -->
+                <field name="resource_id"
+                       string="Equipment"
+                       widget="many2one_avatar_resource"/>
+
+                <!-- Dates -->
+                <field name="start_datetime" string="From"/>
+                <field name="end_datetime" string="To"/>
+
+                <!-- Hidden field for logic -->
+                <field name="resource_type" column_invisible="1"/>
+
+            </list>
+
+        </field>
+    </record>
+
+
+    <!-- ========================= -->
+    <!-- SEARCH VIEW              -->
+    <!-- ========================= -->
     <record id="view_planning_employee_equipment_search" model="ir.ui.view">
-    <field name="name">planning.slot.employee.equipment.search</field>
-    <field name="model">planning.slot</field>
-    <field name="arch" type="xml">
-        <search>
-            <filter name="group_by_employee" 
-                    string="By Employee" 
-                    context="{'group_by': 'assigned_by'}"/>
-            <filter name="group_by_equipment"
-                    string="By Equipment"
-                    context="{'group_by': 'resource_id'}"/>
-        </search>
-    </field>
-</record>
+        <field name="name">planning.slot.employee.equipment.search</field>
+        <field name="model">planning.slot</field>
+        <field name="arch" type="xml">
 
-<record id="action_planning_employee_equipment" model="ir.actions.act_window">
-    <field name="name">Employees &amp; Equipments</field>
-    <field name="res_model">planning.slot</field>
-    <field name="view_mode">list</field>
-    <field name="view_id" ref="view_planning_employee_equipment_list"/>
-    <field name="search_view_id" ref="view_planning_employee_equipment_search"/>
-    <field name="domain">[('resource_type', '=', 'material')]</field>
-    <field name="context">{'search_default_group_by_employee': 1}</field>
-</record>
+            <search>
 
-<!-- Menu -->
-<menuitem id="menu_planning_employee_equipment"
-          name="By Employees"
-          parent="planning.planning_menu_schedule"
-          action="action_planning_employee_equipment"
-          sequence="20"/>
+                <filter name="group_by_employee"
+                        string="By Employee"
+                        context="{'group_by': 'assigned_by'}"/>
 
+                <filter name="group_by_equipment"
+                        string="By Equipment"
+                        context="{'group_by': 'resource_id'}"/>
+
+            </search>
+
+        </field>
+    </record>
+
+
+    <!-- ========================= -->
+    <!-- ACTION                   -->
+    <!-- ========================= -->
+    <record id="action_planning_employee_equipment" model="ir.actions.act_window">
+        <field name="name">Employees &amp; Equipments</field>
+        <field name="res_model">planning.slot</field>
+
+        <!-- enable all views -->
+        <field name="view_mode">gantt,calendar,list,form,kanban,pivot,graph</field>
+
+        <field name="view_id" ref="view_planning_employee_equipment_list"/>
+        <field name="search_view_id" ref="view_planning_employee_equipment_search"/>
+
+        <!-- only materials -->
+        <field name="domain">[('resource_type', '=', 'material')]</field>
+
+        <!-- default grouping -->
+        <field name="context">{}</field>
+    </record>
+
+
+    <!-- ========================= -->
+    <!-- MENU                     -->
+    <!-- ========================= -->
+    <menuitem id="menu_planning_employee_equipment"
+              name="By Employees"
+              parent="planning.planning_menu_schedule"
+              action="action_planning_employee_equipment"
+              sequence="20"/>
 
 </odoo>

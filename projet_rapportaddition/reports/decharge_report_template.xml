@@ -151,21 +151,23 @@
 
                                 <!-- EMPLOYÉ -->
                                 <tr style="border-bottom:1px solid #888;">
-                                    <td style="width:50%; padding:18px 0;">
-                                        <span class="field-label">Nom : </span>
-                                        <span class="field-value">
-                                            <t t-esc="doc.assigned_by.partner_id.name.split(' ')[0] if doc.assigned_by.partner_id.name else ''"/>
-                                        </span>
-                                    </td>
-                                    <td style="width:50%; padding:18px 0;">
-                                        <span class="field-label">Prénom : </span>
-                                        <span class="field-value">
-                                            <t t-if="doc.assigned_by.partner_id.name and ' ' in doc.assigned_by.partner_id.name">
-                                                <t t-esc="' '.join(doc.assigned_by.partner_id.name.split(' ')[1:])"/>
-                                            </t>
-                                        </span>
-                                    </td>
-                                </tr>
+    <td style="width:50%; padding:18px 0;">
+        <span class="field-label">Nom : </span>
+        <span class="field-value">
+            <t t-esc="doc.assigned_by.name.split(' ')[0] if doc.assigned_by.name else ''"/>
+        </span>
+    </td>
+
+    <td style="width:50%; padding:18px 0;">
+        <span class="field-label">Prénom : </span>
+        <span class="field-value">
+            <t t-if="doc.assigned_by.name and ' ' in doc.assigned_by.name">
+                <t t-esc="' '.join(doc.assigned_by.name.split(' ')[1:])"/>
+            </t>
+        </span>
+    </td>
+</tr>
+
 
                                 <!-- ÉQUIPEMENT -->
                                 <tr style="border-bottom:1px solid #888;">
